@@ -2,6 +2,7 @@
 
 import { useOrganizationList } from '@clerk/nextjs'
 import React from 'react'
+import { Item } from './item'
 
 export const List = () => {
   const { userMemberships } = useOrganizationList({
@@ -17,9 +18,12 @@ export const List = () => {
   return (
     <ul className="space-y-4">
       {users.map((user) => (
-        <p className="" key={user.id}>
-          {user.organization.name}
-        </p>
+        <Item
+          key={user.organization.id}
+          id={user.organization.id}
+          name={user.organization.name}
+          imageUrl={user.organization.imageUrl}
+        />
       ))}
     </ul>
   )
