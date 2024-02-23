@@ -1,11 +1,12 @@
 'use client'
 
-import { Link2, Trash2 } from 'lucide-react'
+import { Link2, Pencil, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu'
 
 import { api } from '@/convex/_generated/api'
 import { useApiMutation } from '@/hooks/useApiMutation'
+import { useRenameModal } from '@/store/useRenameModal'
 
 import {
   DropdownMenu,
@@ -32,6 +33,7 @@ export const Actions = ({
   children,
 }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove)
+  const { onOpen } = useRenameModal()
 
   const onCopy = () => {
     navigator.clipboard
@@ -59,6 +61,15 @@ export const Actions = ({
           <Link2 className="h-4 w-4 mr-2" />
           Copiar link deste board
         </DropdownMenuItem>
+
+        <DropdownMenuItem
+          onClick={() => onOpen(id, title)}
+          className="p-3 cursor-pointer"
+        >
+          <Pencil className="h-4 w-4 mr-2" />
+          Renomear
+        </DropdownMenuItem>
+
         <ConfirmModal
           header="Você tem certeza?"
           description="Isso irá excluir este board e todas suas tarefas e não poderá mais ser revertido."
