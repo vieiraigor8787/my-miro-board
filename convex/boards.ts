@@ -1,5 +1,5 @@
 import { v } from 'convex/values'
-import { mutation } from './_generated/server'
+import { query } from './_generated/server'
 
 const images = [
   '/placeholders/1.svg',
@@ -14,26 +14,21 @@ const images = [
   '/placeholders/10.svg',
 ]
 
-export const create = mutation({
+export const get = query({
   args: {
     orgId: v.string(),
-    title: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
 
     if (!identity) throw new Error('Não autorizado')
 
-    const randomImg = images[Math.floor(Math.random() * images.length)]
+    const boards = await ctx.db
+      .query('boards')
+      .withIndex('by_org', (q) => q.eq('orgId', args.orgId))
+      .order('desc')
+      .collect()
 
-    const board = await ctx.db.insert('boards', {
-      title: args.title,
-      orgId: args.orgId,
-      authorId: identity.subject,
-      authorName: identity.name!,
-      imageUrl: randomImg,
-    })
-
-    return board
+    return boards
   },
 })
