@@ -13,6 +13,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
+import { Button } from './ui/button'
+import { ConfirmModal } from './confirm-modal'
 
 interface ActionsProps {
   children: React.ReactNode
@@ -57,10 +59,20 @@ export const Actions = ({
           <Link2 className="h-4 w-4 mr-2" />
           Copiar link deste board
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={onDelete} className="p-3 cursor-pointer">
-          <Trash2 className="h-4 w-4 mr-2" />
-          Deletar este board
-        </DropdownMenuItem>
+        <ConfirmModal
+          header="Você tem certeza?"
+          description="Isso irá excluir este board e todas suas tarefas e não poderá mais ser revertido."
+          disabled={pending}
+          onConfirm={onDelete}
+        >
+          <Button
+            variant="ghost"
+            className="p-3 cursor-pointer text-sm w-full justify-start font-normal"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Deletar este board
+          </Button>
+        </ConfirmModal>
       </DropdownMenuContent>
     </DropdownMenu>
   )
