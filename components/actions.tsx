@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Link2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ActionsProps {
   children: React.ReactNode
@@ -25,6 +26,13 @@ export const Actions = ({
   id,
   children,
 }: ActionsProps) => {
+  const onCopy = () => {
+    navigator.clipboard
+      .writeText(`${window.location.origin}/board/${id}`)
+      .then(() => toast.success('Link copiado.'))
+      .catch(() => toast.error('Falha ao copiar link'))
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -34,7 +42,7 @@ export const Actions = ({
         className="w-60"
         onClick={(e) => e.stopPropagation()}
       >
-        <DropdownMenuItem className="p-3 cursor-pointer">
+        <DropdownMenuItem onClick={onCopy} className="p-3 cursor-pointer">
           <Link2 className="h-4 w-4 mr-2" />
           Copiar link do board
         </DropdownMenuItem>
