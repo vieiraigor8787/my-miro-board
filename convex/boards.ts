@@ -23,7 +23,7 @@ export const get = query({
         .order('desc')
         .collect()
 
-      const ids = favoritedBoards.map((b) => b._id)
+      const ids = favoritedBoards.map((b) => b.boardId)
 
       const boards = await getAllOrThrow(ctx.db, ids)
 
