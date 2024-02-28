@@ -1,19 +1,6 @@
 import { v } from 'convex/values'
 import { query } from './_generated/server'
 
-const images = [
-  '/placeholders/1.svg',
-  '/placeholders/2.svg',
-  '/placeholders/3.svg',
-  '/placeholders/4.svg',
-  '/placeholders/5.svg',
-  '/placeholders/6.svg',
-  '/placeholders/7.svg',
-  '/placeholders/8.svg',
-  '/placeholders/9.svg',
-  '/placeholders/10.svg',
-]
-
 export const get = query({
   args: {
     orgId: v.string(),
@@ -29,6 +16,20 @@ export const get = query({
       .order('desc')
       .collect()
 
-    return boards
+    const boardsWithFavoriteRalation = boards.map((board) => {
+      return ctx.db
+        .query('useFavorites')
+        .withIndex('by_user_board', (q) =>
+          q.eq('userId', identity.subject).eq('boardId', board._id)
+        )
+        .unique()
+        .then((favorite) => {
+          return { ...board, isFavorite: !!favorite }
+        })
+    })
+
+    const boardsWithFavoriteBoolean = Promise.all(boardsWithFavoriteRalation)
+
+    return boardsWithFavoriteBoolean
   },
 })
