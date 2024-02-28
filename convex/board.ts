@@ -87,7 +87,7 @@ export const favorite = mutation({
     const userId = identity.subject
 
     const existingFavorite = await ctx.db
-      .query('useFavorites')
+      .query('userFavorites')
       .withIndex('by_user_board_org', (q) =>
         q.eq('userId', userId).eq('boardId', board._id)
       )
@@ -95,7 +95,7 @@ export const favorite = mutation({
 
     if (existingFavorite) throw new Error('Board já favoritado.')
 
-    await ctx.db.insert('useFavorites', {
+    await ctx.db.insert('userFavorites', {
       userId,
       boardId: board._id,
       orgId: args.orgId,
@@ -119,7 +119,7 @@ export const unFavorite = mutation({
     const userId = identity.subject
 
     const existingFavorite = await ctx.db
-      .query('useFavorites')
+      .query('userFavorites')
       .withIndex(
         'by_user_board',
         (q) => q.eq('userId', userId).eq('boardId', board._id)
