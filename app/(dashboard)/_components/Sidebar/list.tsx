@@ -1,7 +1,6 @@
 'use client'
 
 import { useOrganizationList } from '@clerk/nextjs'
-import React from 'react'
 import { Item } from './item'
 
 export const List = () => {
