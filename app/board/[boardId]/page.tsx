@@ -10,13 +10,11 @@ interface BoardIdPageProps {
 }
 
 const BoardIdPage = ({ params }: BoardIdPageProps) => {
-  return <CanvasLoading />
-
-  // return (
-  //   <Room roomId={params.boardId} fallback={<CanvasLoading />}>
-  //     <Canvas boardId={params.boardId} />
-  //   </Room>
-  // )
+  return (
+    <Room roomId={params.boardId} fallback={<CanvasLoading />}>
+      <Canvas boardId={params.boardId} />
+    </Room>
+  )
 }
 
 export default BoardIdPage
