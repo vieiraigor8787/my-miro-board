@@ -5,7 +5,6 @@ import {
   Redo2,
   Square,
   StickyNote,
-  Text,
   Type,
   Undo2,
 } from 'lucide-react'
