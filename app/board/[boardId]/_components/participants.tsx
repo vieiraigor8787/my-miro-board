@@ -5,7 +5,7 @@ import { useOthers, useSelf } from '@/liveblocks.config'
 import { connectionIdToColor } from '@/lib/utils'
 import { UserAvatar } from './user-avatar'
 
-const MAX_SHOWN_USERS = 1
+const MAX_SHOWN_USERS = 2
 
 export const Participants = () => {
   const users = useOthers()
