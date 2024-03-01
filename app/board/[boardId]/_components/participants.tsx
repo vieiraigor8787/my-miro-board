@@ -1,7 +1,43 @@
+'use client'
+
+import { useOthers, useSelf } from '@/liveblocks.config'
+import { UserAvatar } from './user-avatar'
+
+const MAX_SHOWN_USERS = 1
+
 export const Participants = () => {
+  const users = useOthers()
+  const currentUser = useSelf()
+  const hasMoreUsers = users.length > MAX_SHOWN_USERS
+
   return (
     <div className="absolute top-2 right-2 h-12 bg-white rounded-md p-3 flex items-center shadow-md">
-      Lista de participantes
+      <div className="flex gap-2">
+        {users.slice(0, MAX_SHOWN_USERS).map(({ connectionId, info }) => {
+          return (
+            <UserAvatar
+              key={connectionId}
+              src={info?.picture}
+              name={info?.name}
+              fallback={info?.name?.[0] || 'S'}
+            />
+          )
+        })}
+        {currentUser && (
+          <UserAvatar
+            src={currentUser.info?.picture}
+            name={`${currentUser.info?.name} (você)`}
+            fallback={currentUser.info?.name?.[0]}
+          />
+        )}
+
+        {hasMoreUsers && (
+          <UserAvatar
+            name={`${users.length - MAX_SHOWN_USERS} mais`}
+            fallback={`+ ${users.length - MAX_SHOWN_USERS}`}
+          />
+        )}
+      </div>
     </div>
   )
 }

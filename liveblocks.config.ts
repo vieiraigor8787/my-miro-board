@@ -2,9 +2,9 @@ import { createClient } from '@liveblocks/client'
 import { createRoomContext, createLiveblocksContext } from '@liveblocks/react'
 
 const client = createClient({
-  // authEndpoint: '/api/liveblocks-auth',
-  publicApiKey:
-    'pk_dev_MMURvrJmywW8-M4wbk54JfhZLEdZqaoPzjojn0BDxgWMMpRazZoyPfyp2wfsrmlS',
+  authEndpoint: '/api/liveblocks-auth',
+  // publicApiKey:
+  //   'pk_dev_MMURvrJmywW8-M4wbk54JfhZLEdZqaoPzjojn0BDxgWMMpRazZoyPfyp2wfsrmlS',
 })
 // Presence represents the properties that exist on every user in the Room
 // and that will automatically be kept in sync. Accessible through the
