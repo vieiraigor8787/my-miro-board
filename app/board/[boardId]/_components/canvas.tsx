@@ -173,6 +173,31 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [lastUsedColor]
   )
 
+  const continueDrawing = useMutation(
+    ({ setMyPresence, self }, point: Point, e: React.PointerEvent) => {
+      const { pencilDraft } = self.presence
+
+      if (
+        canvasState.mode !== CanvasMode.Pencil ||
+        e.buttons !== 1 ||
+        pencilDraft == null
+      ) {
+        return
+      }
+
+      setMyPresence({
+        cursor: point,
+        pencilDraft:
+          pencilDraft.length === 1 &&
+          pencilDraft[0][0] === point.x &&
+          pencilDraft[0][1] === point.y
+            ? pencilDraft
+            : [...pencilDraft, [point.x, point.y, e.pressure]],
+      })
+    },
+    [canvasState.mode]
+  )
+
   const resizeSelectedLayer = useMutation(
     ({ storage, self }, point: Point) => {
       if (canvasState.mode !== CanvasMode.Resizing) return
@@ -224,6 +249,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         translateSelectedLayers(current)
       } else if (canvasState.mode === CanvasMode.Resizing) {
         resizeSelectedLayer(current)
+      } else if (canvasState.mode === CanvasMode.Pencil) {
+        continueDrawing(current, e)
       }
 
       setMyPresence({ cursor: current })
@@ -235,6 +262,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       translateSelectedLayers,
       updateSelectionNet,
       startMultiSelection,
+      continueDrawing,
     ]
   )
 
