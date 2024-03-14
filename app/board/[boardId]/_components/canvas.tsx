@@ -228,7 +228,14 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
       setMyPresence({ cursor: current })
     },
-    [canvasState, resizeSelectedLayer, camera, translateSelectedLayers]
+    [
+      canvasState,
+      resizeSelectedLayer,
+      camera,
+      translateSelectedLayers,
+      updateSelectionNet,
+      startMultiSelection,
+    ]
   )
 
   const onPointerLeave = useMutation(({ setMyPresence }) => {
