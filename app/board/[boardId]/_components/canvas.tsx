@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { nanoid } from 'nanoid'
 
 import { LiveObject } from '@liveblocks/client'
@@ -37,6 +37,8 @@ import {
   pointerEventToCanvasPoint,
   resizeBounds,
 } from '@/lib/utils'
+import { useDisableScrollBounce } from '@/hooks/useDisableScrollBounce'
+import { useDeleteLayers } from '@/hooks/useDeleteLayers'
 
 import { Info } from './info'
 import { Participants } from './participants'
@@ -67,6 +69,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     b: 0,
   })
 
+  useDisableScrollBounce()
   const history = useHistory()
   const canUndo = useCanUndo()
   const canRedo = useCanRedo()
@@ -389,6 +392,30 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
     return layerIdsToColorSelection
   }, [selections])
+
+  const deleteLayers = useDeleteLayers()
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      switch (e.key) {
+        case 'z':
+          if (e.ctrlKey || e.metaKey) {
+            if (e.shiftKey) {
+              history.redo()
+            } else {
+              history.undo()
+            }
+            break
+          }
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [deleteLayers, history])
 
   return (
     <main className="h-full w-full relative bg-neutral-100 touch-none">
