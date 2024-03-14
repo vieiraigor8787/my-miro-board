@@ -34,6 +34,16 @@ export const Text = ({
 }: TextProps) => {
   const { x, y, width, height, fill, value } = layer
 
+  const updateValue = useMutation(({ storage }, newValue: string) => {
+    const liveLayers = storage.get('layers')
+
+    liveLayers.get(id)?.set('value', newValue)
+  }, [])
+
+  const handleContentChange = (e: ContentEditableEvent) => {
+    updateValue(e.target.value)
+  }
+
   return (
     <foreignObject
       x={x}
@@ -52,8 +62,8 @@ export const Text = ({
           font.className
         )}
         style={{ color: fill ? colorToCss(fill) : '#000' }}
-        html={'Text'}
-        onChange={() => {}}
+        html={value || 'Text'}
+        onChange={handleContentChange}
       ></ContentEditable>
     </foreignObject>
   )
