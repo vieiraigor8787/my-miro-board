@@ -90,7 +90,7 @@ export type CanvasState =
   | {
       mode: CanvasMode.SelecionNet
       origin: Point
-      curren?: Point
+      current?: Point
     }
   | {
       mode: CanvasMode.Translating
